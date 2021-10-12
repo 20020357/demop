@@ -1,0 +1,10 @@
+hello	xin chào
+goodbye	tạm biệt
+apple	quả táo
+flower	hoa
+banana	quả chuối
+parents	ba mẹ
+transfer	chuyển nhượng
+transports	vận chuyển
+translate	dịch
+transform	biến đổi, thay đổi
