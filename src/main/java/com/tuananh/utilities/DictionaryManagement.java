@@ -3,22 +3,26 @@ package com.tuananh.utilities;
 import com.tuananh.entities.*;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DictionaryManagement {
   private static final Scanner scanner = new Scanner(System.in);
   
   public void insertFromCommandline() {
+    System.out.println("Enter the number of words that you want to add to the dictionary: ");
     int numberOfVocabulary = scanner.nextInt();
     scanner.nextLine();
 
     for (int i = 0; i < numberOfVocabulary; i++) {
+      System.out.println("Please enter the word target: ");
       String wordTarget = scanner.nextLine();
+      System.out.println("Please enter the word explain: ");
       String wordExplain = scanner.nextLine();
 
       Word word = new Word(wordTarget, wordExplain);
@@ -52,6 +56,20 @@ public class DictionaryManagement {
     }
   }
 
+  public void dictionaryExportToFile() {
+    File dictionary = new File("src/main/java/com/tuananh/resource/output dictionary.txt");
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(dictionary));
+      for (int i = 0; i < VariableManagement.D.listWords.size(); i++) {
+        String word = VariableManagement.D.listWords.get(i).getWordTarget() + "\t" + VariableManagement.D.listWords.get(i).getWordExplain();
+        writer.write(word + "\n");
+      }
+      writer.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
   public Word dictionaryLookup() {
     String word = scanner.nextLine();
 
@@ -68,7 +86,7 @@ public class DictionaryManagement {
   }
 
   public void addWord() {
-    System.out.println("Enter both target and explain of the word:");
+    System.out.println("Enter both target and explain of the word that you want to add to the dictionary:");
     
     String wordTarget = scanner.nextLine();
     String wordExplain = scanner.nextLine();
@@ -80,21 +98,13 @@ public class DictionaryManagement {
 
   public void dictionaryEdit() {
     System.out.println("Enter the case that you want to edit: (If input isn't an integer, you will error dictionary !)");
-    System.out.println("\t 1, Edit word target.");
-    System.out.println("\t 2, Edit word explain.");
-    System.out.println("\t Default: Edit word both target and explain.");
+    System.out.println("  1, Edit word target.");
+    System.out.println("  2, Edit word explain.");
+    System.out.println("  Other inputs integer: The default is to edit word both target and explain.");
     
     int caseNumber = 0;
-    boolean isInputTrue = false;
-    do {
-      try {
-        caseNumber = scanner.nextInt();
-        scanner.nextLine();
-        isInputTrue = true;
-      } catch (InputMismatchException e) {
-        e.printStackTrace();
-      }
-    } while (isInputTrue == false);
+    caseNumber = scanner.nextInt();
+    scanner.nextLine();
 
     System.out.println("Enter the word that you want to edit:");
     Word wordEdit = dictionaryLookup();
@@ -131,6 +141,7 @@ public class DictionaryManagement {
     Word wordDelete = dictionaryLookup();
     if (wordDelete != null) {
       VariableManagement.D.listWords.remove(wordDelete);
+      System.out.println(wordDelete.getWordTarget() + "deleted !");
     } else {
       System.out.println("This word doesn't exist in dictionay, so you can't delete it.");
     }
